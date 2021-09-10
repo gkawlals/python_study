@@ -1,11 +1,11 @@
 import cv2
 import numpy as np
-from util.CmmUtils import *
+from util.CommUtils import *
 import roi as roi
 def preprocessing():
 
     # 분석하기 위한 이미지 불러오기
-    image = cv2.imread("Image/study_image.jpg", cv2.IMREAD_COLOR)
+    image = cv2.imread("Image/study_face.jpeg", cv2.IMREAD_COLOR)
 
     # 이미지가 존재하지 않으면 에러 발생
     if image is None : return None, None
@@ -60,38 +60,20 @@ if faces.any():
 
     # 눈을 찾을 수 있다면,
     if len(eyes) == 2:
+        for ex, ey, ew, eh in eyes :
+            center = (x + ex + ew +// 2, y + ey + eh // 2)
 
-        # 얼굴 가운데
-        face_center  = ( x + w // 2, y + h // 2)
-        # 양쪽 눈 가운데 위치 값 가져오기
-        eye_centers = [[x+ex+ew//2, y+ey+eh//2] for ex, ey, ew, eh in eyes]
-
-        # 사진의 기울기 보정
-        correction_image, correction_center = doCorrectionImage( image, face_center, eye_centers )
-
-        # 보정된 눈 좌표 그리기
-        rois = doDetectObject(faces[0], face_center)
-
-        # 보정된 사진 전체를 마스크 만들기
-        base_mask = np.full(correction_image.shape[:2], 255, np.uint8)
-
-        # 얼굴 전체 마스크 만들기 ( 사람의 얼굴은 평균 약 45% 타원으로 구성 )
-        # 얼굴 영역 연산하기 않기 위해 색상을 검정색( 값 : 255)으로 설정
-        lip_mask = draw_eclipse(np.copy(base_mask), rois[2], 255)
-
-        # 윗머리용, 얼굴전체 마스크, 귓밑머리용 얼굴전체 마스크, 입술 마스크, 입술 제외용 마스크를 masks 저장
-        masks = [face_mask, face_mask, lip_mask, ~lip_mask]
-
-        cv2.imshow("MyFace_Edit", correction_image)
+            cv2.circle(image, center, 10, (0,255,0),2)
 
     else :
         print("눈이 없어")
 
-    # # 얼굴 검출 사각형 그리기
-    # cv2.rectangle(image, faces[0], ( 255, 0, 0), 4)
-    #
-    # # 사이즈 변경된 이미지로 출력하기
-    # cv2.imshow("Myface", image)
+     # 얼굴 검출 사각형 그리기
+     cv2.rectangle(image, faces[0], ( 255, 0, 0), 4)
+
+     # 사이즈 변경된 이미지로 출력하기
+    cv2.imshow("Myface", image )
+
 else : print("얼굴 없어")
 
 # 입력받는 것 대기하기, 작성안하면, 결과창이 바로 닫힘

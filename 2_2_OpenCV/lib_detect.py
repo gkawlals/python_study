@@ -1,11 +1,11 @@
 import cv2
 import numpy as np
-from util.CmmUtils import *
+from util.CommUtils import *
 import roi as roi
 def preprocessing():
 
     # 분석하기 위한 이미지 불러오기
-    image = cv2.imread("Image/study_image.jpg", cv2.IMREAD_COLOR)
+    image = cv2.imread("Image/study_face.jpeg", cv2.IMREAD_COLOR)
 
     # 이미지가 존재하지 않으면 에러 발생
     if image is None : return None, None
@@ -22,7 +22,7 @@ def preprocessing():
     return image, gray
 
 # 학습된 얼굴 정면검출기 사용하기
-face_cascade = cv2.CascadeClassifier("data/haarcascade_frontalface_alt2.xml")
+face_cascade = cv2.CascadeClassifier("data/haarcascade_frontface_alt2.xml")
 
 # 학습된 눈 검출기 사용하기
 eye_cascade = cv2.CascadeClassifier("data/haarcascade_eye_tree_eyeglasses.xml")

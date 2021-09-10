@@ -19,7 +19,7 @@ def doCorrectionImage(image, face_center, eye_centers):
     angle = cv2.fastAtan2(dy, dx)
 
     # 계산된 기울기만큼 이미지 회전하기
-    rot = cv2.getRotationMatrix2D(face_center, angle, 1)
+    rot = cv2.getRotationMatrix2D(int(face_center[0],int(face_center[1])), angle, 1)
 
     # 회전된 이미지를 원래 이미지 크기로 자르기
     size = image.shape[1::-1]
